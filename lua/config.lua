@@ -13,10 +13,12 @@ local defaultSettings = {
             "weapon_zm_pistol",
             "weapon_zm_revolver"
         },
-        equipment = {}
+        equipment = {
+            "weapon_ttt_knife"
+        }
     },
-    // blacklist weapons that shouldn't be allowed in the addon's functionality
-    blacklisted_weapons = {
+    // blacklisted weapons that shouldn't be allowed in the addon's functionality
+    blacklisted_ents = {
         weapon_ttt_knife = true
     },
     // add ULX/CAMI ranks that should have access for the weapons' menu
