@@ -1,5 +1,7 @@
 TTTWeaponsManager = {}
 
+// this functionality is also far from complete. A lot of stuff is to be made yet.
+
 local files, dirs = file.Find("ttt_weapons_manager/" .. "*", "LUA")
 
 for _, f in ipairs(files) do

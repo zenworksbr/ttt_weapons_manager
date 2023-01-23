@@ -1,5 +1,7 @@
 TTTWeaponsManager.config = {}
 
+// this functionality is also not yet complete. A lot of stuff is to be made.
+
 TTTWeaponsManager.config.rootDir = "ttt_weapons_manager"
 
 TTTWeaponsManager.config.filePathOrigin = "DATA"
