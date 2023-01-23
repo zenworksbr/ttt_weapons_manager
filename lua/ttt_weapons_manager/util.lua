@@ -7,6 +7,7 @@ local fileGameDir = TTTWeaponsManager.config.filePathOrigin
 // -----------------------------------------------------------------
 // PURPOSE: it will properly initialize a specific lua file
 // It will also do all the filtering to add specific realms' files in the proper way
+// DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
 function TTTWeaponsManager.util.IncludeSingleFile(fileName, dirName)
 
@@ -30,6 +31,7 @@ local IncludeFile = TTTWeaponsManager.util.IncludeSingleFile
 // -----------------------------------------------------------------
 // PURPOSE: it will run when the addon is initialized, and will loop through all
 // the subdirectories in the addon, find the files, and let the IncludeSingleFile() function handle them
+// DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
 function TTTWeaponsManager.util.IncludeFiles()
 

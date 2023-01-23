@@ -5,6 +5,7 @@ TTTWeaponsManager.lang = {}
 // HOW: it will receive a parameter (language file's name) and it will search 
 // for it in the languages' directory and try to read its content and turn it
 // into that language's table key in the table.
+// DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
 function TTTWeaponsManager.lang.AddLocalization(langName)
     if TTTWeaponsManager.lang.Strings[langName] then return end
@@ -19,6 +20,7 @@ end
 // -----------------------------------------------------------------
 // PURPOSE: It will try to initialize the localization tables so it will be easier to fetch and add
 // new tables of strings to the main table.
+// DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
 function TTTWeaponsManager.lang.BuildCachedLocalizations(directory)
     local langs, dirs = file.Find(directory, "*", "LUA")
