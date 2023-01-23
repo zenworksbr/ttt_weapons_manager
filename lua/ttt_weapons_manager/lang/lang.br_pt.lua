@@ -1,0 +1,1 @@
+local Lang = TTTWeaponsManager.lang.AddLocalization("Português (Brasil)")
