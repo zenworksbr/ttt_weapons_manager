@@ -5,51 +5,6 @@ local fileName = TTTWeaponsManager.config.fileName
 local fileGameDir = TTTWeaponsManager.config.filePathOrigin
 
 // -----------------------------------------------------------------
-// PURPOSE: it will properly initialize a specific lua file
-// It will also do all the filtering to add specific realms' files in the proper way
-// DO NOTE that this function is not yet done.
-// -----------------------------------------------------------------
-function TTTWeaponsManager.util.IncludeSingleFile(fileName, dirName)
-
-    local prefix = string.lower( string.Left( fileName, 3 ) )
-
-    if prefix == "sv" then
-        if !SERVER then return end
-        AddCSLuaFile(dirName .. fileName)
-        include(dirName .. fileName)
-        print("Inicializando " .. fileName )
-    elseif prefix == "cl" then
-        if !CLIENT then return end
-        include(dirName .. fileName)
-    else
-        AddCSLuaFile(dirName .. fileName)
-        include(dirName .. fileName)
-    end
-end
-local IncludeFile = TTTWeaponsManager.util.IncludeSingleFile
-
-// -----------------------------------------------------------------
-// PURPOSE: it will run when the addon is initialized, and will loop through all
-// the subdirectories in the addon, find the files, and let the IncludeSingleFile() function handle them
-// DO NOTE that this function is not yet done.
-// -----------------------------------------------------------------
-function TTTWeaponsManager.util.IncludeFiles()
-
-    directory = TTTWeaponsManager.config.rootDir .. "/"
-
-    local files, dirs = file.Find(directory .. "*", "LUA")
-    
-    for k, dir in ipairs(dirs) do
-        for _, f in ipairs(dir) do
-            local prefix = string.lower( string.Left( f, 3 ) )
-            //print(f)
-            //PrintTable(f)
-            IncludeFile(f)
-        end
-    end
-end
-
-// -----------------------------------------------------------------
 // just a shortcut for the file.Exists() function.
 // it is only for practical and clean code purposes
 // -----------------------------------------------------------------
@@ -64,11 +19,15 @@ local ConfigExists = TTTWeaponsManager.util.ConfigExists
 // -----------------------------------------------------------------
 function TTTWeaponsManager.util.SaveSettings(data)
 
+    -- should be noted that this function will have to be rewritten once we are starting to mess with inputs
+    -- for new settings and preferences
     if !ConfigExists() then 
         file.CreateDir(filePath)
     end
 
-    file.Write(filePath .. fileName, data)
+
+    -- we can't just completely overwrite the whole settings' file with the data received from this function
+    file.Write(filePath .. fileName, util.TableToJSON(data))
 end
 
 // -----------------------------------------------------------------
@@ -109,6 +68,8 @@ function TTTWeaponsManager.util.FetchConfig()
     if !ConfigExists() then return TTTWeaponsManager.config.defaultSettings end
 
     settings = file.Read(filePath .. fileName, fileGameDir)
+
+    settings = util.JSONToTable(settings)
 
     return settings
 end
