@@ -1,9 +1,14 @@
 TTTWeaponsManager = {}
+TTTWeaponsManager.config = {}
+TTTWeaponsManager.lang = {}
 
 // this functionality is also far from complete. A lot of stuff is to be made yet.
-local rootDir = "ttt_weapons_manager"
+TTTWeaponsManager.rootDir = "ttt_weapons_manager"
 
-local msg_prefix = "Weapons Manager"
+TTTWeaponsManager.prefix = "Weapons Manager"
+
+local rootDir = TTTWeaponsManager.rootDir
+local msg_prefix = TTTWeaponsManager.prefix
 
 local ignore = {
     lang = true
