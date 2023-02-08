@@ -1,7 +1,7 @@
 TTTWeaponsManager.lang = TTTWeaponsManager.lang or {}
 
 local LangDir = TTTWeaponsManager.config.LangDir .. "/"
-local msg_prefix = TTTWeaponsManager.prefix
+local MsgPrefix = TTTWeaponsManager.Prefix
 
 if !SERVER then return end
 
@@ -12,16 +12,16 @@ if !SERVER then return end
 // into that language's table key in the table.
 // DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
-function TTTWeaponsManager.lang.AddLocalization(langName)
-    if TTTWeaponsManager.lang.Strings[langName] then return end
+function TTTWeaponsManager.lang.AddLocalization(LangName)
+    if TTTWeaponsManager.lang.Strings[LangName] then return end
 
-    TTTWeaponsManager.lang.Strings[langName] = {}
+    TTTWeaponsManager.lang.Strings[LangName] = {}
 
-    local langFile, dirs = file.Find(LangDir .. langName, "LUA")
+    local LangFile, dirs = file.Find(LangDir .. LangName, "LUA")
 
-    local langContent = file.Read(LangDir .. langName, "LUA")
+    local LangContent = file.Read(LangDir .. LangName, "LUA")
     
-    table.Add(TTTWeaponsManager.lang.Strings[langName], langContent)
+    table.Add(TTTWeaponsManager.lang.Strings[LangName], LangContent)
 end
 local AddLocalization = TTTWeaponsManager.lang.AddLocalization
 
@@ -36,7 +36,7 @@ function TTTWeaponsManager.lang.BuildCachedLocalizations()
     local langs, dir = file.Find(LangDir .. "*", "LUA")
 
     for _, f in ipairs(langs) do
-        print("[" .. msg_prefix .. "] Including LANG file " .. f )
+        print("[" .. MsgPrefix .. "] Including LANG file " .. f )
         AddLocalization(f)
     end
 
@@ -47,10 +47,10 @@ local BuildCachedLocalizations = TTTWeaponsManager.lang.BuildCachedLocalizations
 // PURPOSE: return a specific language string from the requested language localization
 // HOW: it will just return a json-like queried string from that specific language table
 // -----------------------------------------------------------------
-function TTTWeaponsManager.lang.FetchSingleString(langName, stringName)
-    if !TTTWeaponsManager.lang.Strings[langName][stringName] then return end
+function TTTWeaponsManager.lang.FetchSingleString(LangName, StringName)
+    if !TTTWeaponsManager.lang.Strings[LangName][StringName] then return end
 
-    return TTTWeaponsManager.lang.Strings[langName][stringName]
+    return TTTWeaponsManager.lang.Strings[LangName][StringName]
 end
 
 BuildCachedLocalizations()

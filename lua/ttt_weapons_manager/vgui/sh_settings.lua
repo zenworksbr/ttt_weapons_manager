@@ -1,3 +1,5 @@
 // vgui to be added
 
-print("Initialized interface...")
+hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtabs)
+    print("Initialized interface...")
+end)

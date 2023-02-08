@@ -4,22 +4,22 @@ TTTWeaponsManager.config = TTTWeaponsManager.config or {}
 
 // set up some of the important values we will need along the way
 
-TTTWeaponsManager.config.filePathOrigin = "DATA"
-TTTWeaponsManager.config.filePath = "ttt_weapons_manager/"
-TTTWeaponsManager.config.fileName = "settings.json"
+TTTWeaponsManager.config.FilePathOrigin = "DATA"
+TTTWeaponsManager.config.FilePath = "ttt_weapons_manager/"
+TTTWeaponsManager.config.FileName = "settings.json"
 
 TTTWeaponsManager.config.LangDir = "ttt_weapons_manager/lang"
 
-local filePathOrigin = TTTWeaponsManager.config.filePathOrigin
-local filePath = TTTWeaponsManager.config.filePath
-local fileName = TTTWeaponsManager.config.fileName
+local FilePathOrigin = TTTWeaponsManager.config.FilePathOrigin
+local FilePath = TTTWeaponsManager.config.FilePath
+local FileName = TTTWeaponsManager.config.FileName
 
 // -----------------------------------------------------------------
 // just a shortcut for the file.Exists() function.
 // it is only for practical and clean code purposes
 // -----------------------------------------------------------------
-function TTTWeaponsManager.config.ConfigExists()
-    return file.Exists(filePath, filePathOrigin)
+function TTTWeaponsManager.config:ConfigExists()
+    return file.Exists(FilePath, FilePathOrigin)
 end
 // abreviating all of the classes subclasses and all those names for the function to have a clearer identifier
 local ConfigExists = TTTWeaponsManager.config.ConfigExists
@@ -27,17 +27,17 @@ local ConfigExists = TTTWeaponsManager.config.ConfigExists
 // -----------------------------------------------------------------
 // PURPOSE: will write the addon's settings to the config file, overwriting all current data, if it exists
 // -----------------------------------------------------------------
-function TTTWeaponsManager.config.SaveSettings(data)
+function TTTWeaponsManager.config:SaveSettings(data)
 
     -- should be noted that this function will have to be rewritten once we are starting to mess with inputs
     -- for new settings and preferences
     if !ConfigExists() then 
-        file.CreateDir(filePath)
+        file.CreateDir(FilePath)
     end
 
 
     -- we can't just completely overwrite the whole settings' file with the data received from this function
-    file.Write(filePath .. fileName, util.TableToJSON(data))
+    file.Write(FilePath .. FileName, util.TableToJSON(data))
 end
 
 // -----------------------------------------------------------------
@@ -46,26 +46,26 @@ end
 // Maybe not the best or most efficient way to do that, but you can always send a PR and suggest something better :)
 // it does work, it is not that ugly, neither problematic, so I don't see a big problem for this solution (FOR NOW)
 // -----------------------------------------------------------------
-function TTTWeaponsManager.config.ResetDefaults()
+function TTTWeaponsManager.config:ResetDefaults()
     if !ConfigExists() then
         return false 
     end
 
-    file.Rename(filePath .. fileName, filePath .. "old_" .. fileName)
+    file.Rename(FilePath .. FileName, FilePath .. "old_" .. FileName)
 end
 
 // -----------------------------------------------------------------
 // Also straight forward: resetting to defaults doesn't really delete the old configs,
 // it just renames them, so it should be safe and pretty easy to get them back.
 // -----------------------------------------------------------------
-function TTTWeaponsManager.config.UndoResetDefaults(enforce)
+function TTTWeaponsManager.config:UndoResetDefaults(enforce)
     if ConfigExists() and !enforce then
         return false 
     end
 
-    if !file.Exists(filePath .. "old_" .. fileName, fileGameDir) then return false end
+    if !file.Exists(FilePath .. "old_" .. FileName, FileGameDir) then return false end
 
-    file.Rename(filePath .. "old_" .. fileName, filePath .. fileName)
+    file.Rename(FilePath .. "old_" .. FileName, FilePath .. FileName)
 end
 
 // -----------------------------------------------------------------
@@ -73,11 +73,11 @@ end
 // and try to return its content or will return default settings
 // HOW: there's no further explaining it, it is pretty straightforward
 // -----------------------------------------------------------------
-function TTTWeaponsManager.config.FetchConfig()
+function TTTWeaponsManager.config:FetchConfig()
 
-    if !ConfigExists() then return TTTWeaponsManager.config.defaultSettings end
+    if !ConfigExists() then return TTTWeaponsManager.config.DefaultSettings end
 
-    settings = file.Read(filePath .. fileName, fileGameDir)
+    settings = file.Read(FilePath .. FileName, FileGameDir)
 
     settings = util.JSONToTable(settings)
 
@@ -86,7 +86,13 @@ end
 
 // do note that you should NOT leave more than ONE equipment for the same slot allowed
 
-TTTWeaponsManager.defaultSettings = {
+TTTWeaponsManager.IgnoredWeapons = {
+    weapon_zm_improvised = true,
+    weapon_zm_carry = true,
+    weapon_ttt_unarmed = true
+}
+
+TTTWeaponsManager.DefaultSettings = {
     // always add all of your server's weapon ents here, and if they shouldn't be allowed, blacklist them below
     // slot 3...
     primary = {
@@ -126,7 +132,7 @@ TTTWeaponsManager.defaultSettings = {
     }
 }
 
-TTTWeaponsManager.config.forcedSettings = {
+TTTWeaponsManager.config.ForcedSettings = {
     primary = {
         weapon_ttt_ak47  = true,
         weapon_ttt_aug  = true,
@@ -215,9 +221,9 @@ TTTWeaponsManager.config.forcedSettings = {
     }
 }
 
-TTTWeaponsManager.config.SaveSettings(TTTWeaponsManager.config.forcedSettings)
+TTTWeaponsManager.config:SaveSettings(TTTWeaponsManager.config.ForcedSettings)
 
-TTTWeaponsManager.config.Weapons = TTTWeaponsManager.config.FetchConfig()
+TTTWeaponsManager.config.Weapons = TTTWeaponsManager.config:FetchConfig()
 
 if SERVER then
     PrintTable(TTTWeaponsManager.config.Weapons)

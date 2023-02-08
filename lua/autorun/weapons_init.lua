@@ -18,12 +18,12 @@ local function IncludeSingleFile(dirName, fileName)
 
     local prefix = string.lower( string.Left( fileName, 3 ) )
 
-    if prefix == "sv" then
+    if prefix == "sv_" then
         if !SERVER then return end
         AddCSLuaFile(dirName .. fileName)
         include(dirName .. fileName)
         print("[" .. msg_prefix .. "] Including SERVER file " .. fileName )
-    elseif prefix == "cl" then
+    elseif prefix == "cl_" then
         if !CLIENT then return end
         include(dirName .. fileName)
         print("[" .. msg_prefix .. "] Including CLIENT file " .. fileName )
@@ -48,7 +48,7 @@ local function IncludeDir(directory)
     end
 
     for _, dir in ipairs(dirs) do
-        if ignore[dir] then print("ignoring " .. dir) return end
+        if ignore[dir] then print("ignoring " .. dir) continue end
         print("[" .. msg_prefix .. "] Including directory " .. dir)
         IncludeDir(directory .. dir)
     end

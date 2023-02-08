@@ -3,8 +3,11 @@
 print("Server side initialized")
 
 hook.Add("TTTPrepareRound", "TTTWeaponManagerExploitBlocker", function() 
+    
     for _, ply in ipairs(player.GetAll()) do
-        print(player:GetWeapons())
+        if ply:IsBot() then continue end 
+        print("Armas do jogador " .. ply:Nick())
+        PrintTable(ply:GetWeapons())
     end
     
     // do something...
@@ -12,11 +15,13 @@ hook.Add("TTTPrepareRound", "TTTWeaponManagerExploitBlocker", function()
 end)
 
 hook.Add("TTTBeginRound", "TTTWeaponManagerOnRoundStart", function()
-    // do something else...
+    
     for _, ply in ipairs(player.GetAll()) do
-        print(player:GetWeapons())
+        if ply:IsBot() then continue end 
+        print("Armas do jogador " .. ply:Nick())
+        PrintTable(ply:GetWeapons())
     end
 
-
+    // do something else...
     return 
 end)
