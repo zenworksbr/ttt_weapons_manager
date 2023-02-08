@@ -8,7 +8,9 @@ The intention is leave it open for collaboration from other developers and creat
 
 Another intention we have in mind is to document every important stuff in the code and make it be easily expansible and usable with global functions.
 
-# Another important aspect is the localization
+# Another important aspect is the localisation
 
-We want to leave it open so anyone can add a new localization table in any other language to the addon
-By default, it will support English (UK style) and Portuguese (Brazil)
+We want to leave it open so anyone can add a new localisation table in any other language to the addon.
+By default, it will support English (UK) and Portuguese (Brazil)
+
+If you want to collaborate and translate the addon to your native language (or a language you master), feel free to clone the repo and translate it from the language of your preference :)
