@@ -1,36 +1,39 @@
 TTTWeaponsManager = {}
 TTTWeaponsManager.config = {}
 TTTWeaponsManager.lang = {}
+TTTWeaponsManager.net = {}
 
 // this functionality is also far from complete. A lot of stuff is to be made yet.
-TTTWeaponsManager.rootDir = "ttt_weapons_manager"
+TTTWeaponsManager.RootDir = "ttt_weapons_manager"
 
-TTTWeaponsManager.prefix = "Weapons Manager"
+TTTWeaponsManager.Prefix = "Weapons Manager"
 
-local rootDir = TTTWeaponsManager.rootDir
-local msg_prefix = TTTWeaponsManager.prefix
+local RootDir = TTTWeaponsManager.RootDir
+local MsgPrefix = TTTWeaponsManager.Prefix
 
-local ignore = {
+local IgnoreDirs = {
     lang = true
 }
 
-local function IncludeSingleFile(dirName, fileName)
+local function IncludeSingleFile(DirName, FileName)
 
-    local prefix = string.lower( string.Left( fileName, 3 ) )
+    local prefix = string.lower( string.Left( FileName, 3 ) )
 
     if prefix == "sv_" then
         if !SERVER then return end
-        AddCSLuaFile(dirName .. fileName)
-        include(dirName .. fileName)
-        print("[" .. msg_prefix .. "] Including SERVER file " .. fileName )
+        include(DirName .. FileName)
+        print("[" .. MsgPrefix .. "] Including SERVER file " .. FileName )
     elseif prefix == "cl_" then
-        if !CLIENT then return end
-        include(dirName .. fileName)
-        print("[" .. msg_prefix .. "] Including CLIENT file " .. fileName )
+        if SERVER then 
+            AddCSLuaFile(DirName .. FileName)
+        else
+            include(DirName .. FileName)
+            print("[" .. MsgPrefix .. "] Including CLIENT file " .. FileName )
+        end
     else
-        AddCSLuaFile(dirName .. fileName)
-        include(dirName .. fileName)
-        print("[" .. msg_prefix .. "] Including SHARED file " .. fileName )
+        AddCSLuaFile(DirName .. FileName)
+        include(DirName .. FileName)
+        print("[" .. MsgPrefix .. "] Including SHARED file " .. FileName )
     end
 end
 
@@ -40,7 +43,7 @@ local function IncludeDir(directory)
 
     local files, dirs = file.Find(directory .. "*", "LUA")
     
-    print("[" .. msg_prefix .. "] On directory " .. directory .. "...")
+    print("[" .. MsgPrefix .. "] On directory " .. directory .. "...")
 
     for _, f in ipairs(files) do
         if !string.EndsWith(f, ".lua") then continue end
@@ -48,17 +51,20 @@ local function IncludeDir(directory)
     end
 
     for _, dir in ipairs(dirs) do
-        if ignore[dir] then print("ignoring " .. dir) continue end
-        print("[" .. msg_prefix .. "] Including directory " .. dir)
+        if IgnoreDirs[dir] then print("ignoring " .. dir) continue end
+        print("[" .. MsgPrefix .. "] Including directory " .. dir)
         IncludeDir(directory .. dir)
     end
 end
 
 if SERVER then
-    print("[" .. msg_prefix .. "] Initializing server side files...")
+    util.AddNetworkString("TTTWeaponsManager_WeaponsTable")
+    util.AddNetworkString("TTTWeaponsManager_PlayerWeaponChoicesTbl")
+
+    print("[" .. MsgPrefix .. "] Initializing server side files...")
 
 elseif CLIENT then
-    print("[" .. msg_prefix .. "] Initializing client side files...")
+    print("[" .. MsgPrefix .. "] Initializing client side files...")
 end
 
-IncludeDir(rootDir)
+IncludeDir(RootDir)

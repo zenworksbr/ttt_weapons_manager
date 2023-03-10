@@ -1,6 +1,8 @@
 TTTWeaponsManager.lang = TTTWeaponsManager.lang or {}
 
-local LangDir = TTTWeaponsManager.config.LangDir .. "/"
+TTTWeaponsManager.lang.LangDir = "ttt_weapons_manager/lang"
+
+local LangDir = TTTWeaponsManager.lang.LangDir .. "/"
 local MsgPrefix = TTTWeaponsManager.Prefix
 
 if !SERVER then return end
@@ -12,7 +14,7 @@ if !SERVER then return end
 // into that language's table key in the table.
 // DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
-function TTTWeaponsManager.lang.AddLocalization(LangName)
+function TTTWeaponsManager.lang:AddLocalization(LangName)
     if TTTWeaponsManager.lang.Strings[LangName] then return end
 
     TTTWeaponsManager.lang.Strings[LangName] = {}
@@ -30,7 +32,7 @@ local AddLocalization = TTTWeaponsManager.lang.AddLocalization
 // new tables of strings to the main table.
 // DO NOTE that this function is not yet done.
 // -----------------------------------------------------------------
-function TTTWeaponsManager.lang.BuildCachedLocalizations()
+function TTTWeaponsManager.lang:BuildCachedLocalizations()
     TTTWeaponsManager.lang.Strings = {}
 
     local langs, dir = file.Find(LangDir .. "*", "LUA")
@@ -47,10 +49,18 @@ local BuildCachedLocalizations = TTTWeaponsManager.lang.BuildCachedLocalizations
 // PURPOSE: return a specific language string from the requested language localization
 // HOW: it will just return a json-like queried string from that specific language table
 // -----------------------------------------------------------------
-function TTTWeaponsManager.lang.FetchSingleString(LangName, StringName)
+function TTTWeaponsManager.lang:FetchSingleString(LangName, StringName)
     if !TTTWeaponsManager.lang.Strings[LangName][StringName] then return end
 
     return TTTWeaponsManager.lang.Strings[LangName][StringName]
+end
+
+// -----------------------------------------------------------------
+// PURPOSE: check if a lang setting is valid and exists within the localisations of the addon
+// HOW: iterate through the Lang keys in the Strings table.
+// -----------------------------------------------------------------
+function TTTWeaponsManager.lang:ValidateLocalization(lang)
+    return TTTWeaponsManager.lang.Strings[lang] or "English"
 end
 
 BuildCachedLocalizations()
