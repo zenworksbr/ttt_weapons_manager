@@ -65,6 +65,7 @@ function PANEL:SetCategory(name)
 
 	self:SetName(name)
 
+	self.CheckBox:SetChecked(GetConVar(self.cvar):GetString() == "random")
 end
 
 function PANEL:SetWeapons(tbl)
@@ -72,7 +73,7 @@ function PANEL:SetWeapons(tbl)
 
 	for _, v in pairs(tbl) do
         if v then 
-		self.Weapons[_] = weapons.Get(_)
+			self.Weapons[_] = weapons.Get(_)
         end
 	end
 
@@ -80,7 +81,7 @@ function PANEL:SetWeapons(tbl)
 end
 
 function PANEL:GetNewValue()
-	if self.CheckBox:GetChecked() then
+	if self.CheckBox:GetChecked() or !TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] then
 		return "random"
 	elseif self.Loadout.SelectedPanel then
 		return self.Loadout.SelectedPanel.Value
@@ -102,14 +103,13 @@ function PANEL:AddWeapons()
 
         icon:SetIcon(v.Icon or "vgui/ttt/icon_nades")
 
+		local wep_name = v.PrintName
 
-		// if Material(v) and Material(v).IsError and not Material(v):IsError() then
-		// 	icon:SetIcon(v)
-		// else
-		// 	icon:SetIcon("vgui/ttt/icon_nades")
-		// end
+		if LANG.GetTranslation(wep_name) != "[ERROR: Translation of " .. wep_name .. " not found]" then
+			wep_name = LANG.GetTranslation(wep_name)
+		end
 
-		icon:SetTooltip(k)
+		icon:SetTooltip(wep_name)
 
 		local old_func = icon.OnCursorEntered
 
@@ -119,6 +119,10 @@ function PANEL:AddWeapons()
 		end
 
 		self.Loadout:AddPanel(icon)
+
+		if GetConVar(self.cvar):GetString() == k then
+			self.Loadout:SelectPanel(icon)
+		end
 
 	end
 
@@ -132,18 +136,23 @@ function PANEL:AddWeapons()
 end
 
 function PANEL:Init()
+
 	self.CheckBox = vgui.Create("DCheckBoxLabel", self)
 	self.CheckBox:SetPos(320, 3)
-	self.CheckBox:SetText("Random weapon")
+	self.CheckBox:SetText("Aleatório")
 	self.CheckBox:SizeToContents()
+	if self.cvar == "random" then 
+		self.CheckBox:SetChecked(true)
+	end
 
 	self.Save = vgui.Create("DButton", self)
 	self.Save:SetSize(50, 17)
 	self.Save:SetPos(438, 1)
-	self.Save:SetText("Save")
+	self.Save:SetText("Salvar")
 	self.Save.DoClick = function()
 		RunConsoleCommand(self.cvar, self:GetNewValue())
 		SpecDM.UpdateLoadout()
+		TTTWeaponsManager.net.SendPreferencesToServer()
 	end
 
 	self.Panel = vgui.Create("DPanel", self)
@@ -162,6 +171,8 @@ function PANEL:Init()
 
 	self.Loadout.SelectPanel = function(panel, selected)
 		old_selectpanel(panel, selected)
+		print(old_selectpanel(panel, selected))
+		print(self.Loadout.SelectedPanel.Value)
 
 		if selected then
 			selected.PaintOver = function(_, w,h)
