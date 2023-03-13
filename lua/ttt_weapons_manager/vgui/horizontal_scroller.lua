@@ -64,8 +64,6 @@ function PANEL:SetCategory(name)
 	self.CategoryName = name
 
 	self:SetName(name)
-
-	self.CheckBox:SetChecked(GetConVar(self.cvar):GetString() == "random")
 end
 
 function PANEL:SetWeapons(tbl)
@@ -133,6 +131,7 @@ function PANEL:AddWeapons()
 	end
 
 	self.Loadout:SetSize(self.WeaponsCount*96, 100)
+	self.CheckBox:SetChecked(GetConVar(self.cvar):GetString() == "random")
 end
 
 function PANEL:Init()
@@ -151,7 +150,6 @@ function PANEL:Init()
 	self.Save:SetText("Salvar")
 	self.Save.DoClick = function()
 		RunConsoleCommand(self.cvar, self:GetNewValue())
-		SpecDM.UpdateLoadout()
 		TTTWeaponsManager.net.SendPreferencesToServer()
 	end
 
