@@ -138,6 +138,7 @@ TTTWeaponsManager.config.ForcedSettings = {
             weapon_ttt_mp5 = true,
             weapon_ttt_g3sg1 = true,
             weapon_ttt_smg = true,
+            weapon_ttt_p90 = true,
             weapon_ttt_mac10 = true,
             m9k_acr = true,
             m9k_an94 = true,
