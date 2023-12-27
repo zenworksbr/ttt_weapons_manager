@@ -1,3 +1,5 @@
+if RayHUDTTT then return end
+
 local PANEL = {
 	Start = 1,
 	End = 5

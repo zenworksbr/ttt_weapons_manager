@@ -1,3 +1,5 @@
+if RayHUDTTT then return end
+
 hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtabs)
 
     if (!TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] and !TTTWeaponsManager.config.Table.config_allowed_ranks[LocalPlayer():GetUserGroup()]) then return end
