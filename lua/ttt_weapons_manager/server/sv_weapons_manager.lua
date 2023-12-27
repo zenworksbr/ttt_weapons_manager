@@ -19,10 +19,9 @@ end
 -- this function will return if the player is actually allowed to have a custom value set as their client-side cvar
 -- else, it will just return false when called, and they will be given a random weapon instead
 local function ValidatePlyChoices(ply, cat, wep)
-
+  
     -- pretty simple here, just check if the player's usergroup exists in the allowed_ranks table
     -- it will be stored with the value of true if it should be allowed, and that's what we will return here
-
     return TTTWeaponsManager.config.Table.choice_allowed_ranks[ply:GetUserGroup()] and TTTWeaponsManager.config.Table["weapons"][cat][wep]
 end
 
@@ -61,7 +60,7 @@ local function GiveWeapons(ply, inv_weps)
         -- had to add an if above because there are some weapons in TTT that aren't supposed to have extra ammo (reserve ammo),
         -- so we shouldn't give ammo for those weapons, since it may break them
 
-        res[k] = wep_class
+        res[k] = choice_cvars[k].PrintName
     end
 
     return res
@@ -89,11 +88,18 @@ hook.Add("TTTBeginRound", "TTTWeaponManagerOnRoundStart", function()
 
         local res = GiveWeapons(jog, ply_weps)
 
-        ply_weps = {
-            primary = false,
-            secondary = false,
-            equipment = false
-        }
+        print("Armas recebidas por " .. jog:Nick())
+        PrintTable(res)
+
+        local text = ""
+
+        for k, item in pairs(res) do
+            text = text .. ", " .. item 
+        end
+
+        if !table.IsEmpty(res) then
+            jog:ChatPrint("Você recebeu " .. text .. "!")
+        end
 
     end
 
