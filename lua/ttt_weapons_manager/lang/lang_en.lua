@@ -1,19 +1,23 @@
-local Lang = TTTWeaponsManager.lang.AddLocalization("English")
+-- local L = TTTWeaponsManager.lang.AddLocalization('English')
 
 // DO NOTE that this whole localization file is not yet done.
 
-prefix = "[TTT Weapons Manager] "
+if CLIENT then
 
-ui_tab_title = "Weapons Manager"
+        LANG.AddToLanguage('english', 'ttt_wm_prefix', '[TTT Weapons Manager] ')
 
--- UI Advanced Settings section
-ui_advanced_settings = "Advanced Settings"
+        LANG.AddToLanguage('english', 'ttt_wm_ui_tab_title', 'Weapons Manager')
 
-ui_normal_settings = "Prefereneces"
--- UI Weapons Section
-ui_weapons_category = "Weapons section"
-ui_wc_primary = "Primary Weapons"
-ui_wc_secondary = "Secondary Weapons"
-ui_wc_equipment = "Other Equipment"
+        -- UI Advanced Settings section
+        LANG.AddToLanguage('english', 'ttt_wm_ui_advanced_settings', 'Advanced Settings')
 
-ui_wc_randomize = "Random"
+        LANG.AddToLanguage('english', 'ttt_wm_ui_normal_settings', 'Prefereneces')
+        -- UI Weapons Section
+        LANG.AddToLanguage('english', 'ttt_wm_ui_weapons_category', 'Weapons section')
+        LANG.AddToLanguage('english', 'ttt_wm_ui_wc_primary', 'Primary Weapons')
+        LANG.AddToLanguage('english', 'ttt_wm_ui_wc_secondary', 'Secondary Weapons')
+        LANG.AddToLanguage('english', 'ttt_wm_ui_wc_equipment', 'Other Equipment')
+
+        LANG.AddToLanguage('english', 'ttt_wm_ui_wc_randomize', 'Random')
+
+end

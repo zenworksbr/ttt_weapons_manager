@@ -12,7 +12,7 @@ local RootDir = TTTWeaponsManager.RootDir
 local MsgPrefix = TTTWeaponsManager.Prefix
 
 local IgnoreDirs = {
-    lang = true
+    lang = false
 }
 
 local function IncludeSingleFile(DirName, FileName)
@@ -58,6 +58,9 @@ local function IncludeDir(directory)
 end
 
 if SERVER then
+
+    print("[" .. MsgPrefix .. "] Initializing network messages...")
+
     util.AddNetworkString("TTTWeaponsManager_WeaponsTable")
     util.AddNetworkString("TTTWeaponsManager_PlayerWeaponChoicesTbl")
 

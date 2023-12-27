@@ -1,19 +1,23 @@
-local Lang = TTTWeaponsManager.lang.AddLocalization("Português (Brasil)")
+-- local L = TTTWeaponsManager.lang.AddLocalization('Português (Brasil)')
 
 // DO NOTE that this whole localization file is not yet done.
 
-prefix = "[TTT Gerenciador de Armas] "
+if CLIENT then
 
-ui_tab_title = "Armas Iniciais"
+        LANG.AddToLanguage('Português (Brasil)', 'prefix', '[TTT Gerenciador de Armas] ')
 
--- Seção das configurações avançadas da interface
-ui_advanced_settings = "Gerenciar"
+        LANG.AddToLanguage('Português (Brasil)', 'ui_tab_title', 'Armas Iniciais')
 
-ui_normal_settings = "Preferências"
--- Seção das armas da interface
-ui_weapons_category = "Seção das armas"
-ui_wc_primary = "Armas primárias"
-ui_wc_secondary = "Armas secundárias"
-ui_wc_equipment = "Outros equipamentos"
+        -- Seção das configurações avançadas da interface
+        LANG.AddToLanguage('Português (Brasil)', 'ui_advanced_settings', 'Gerenciar')
 
-ui_wc_randomize = "Aleatório"
+        LANG.AddToLanguage('Português (Brasil)', 'ui_normal_settings', 'Preferências')
+        -- Seção das armas da interface
+        LANG.AddToLanguage('Português (Brasil)', 'ui_weapons_category', 'Seção das armas')
+        LANG.AddToLanguage('Português (Brasil)', 'ui_wc_primary', 'Armas primárias')
+        LANG.AddToLanguage('Português (Brasil)', 'ui_wc_secondary', 'Armas secundárias')
+        LANG.AddToLanguage('Português (Brasil)', 'ui_wc_equipment', 'Outros equipamentos')
+
+        LANG.AddToLanguage('Português (Brasil)', 'ui_wc_randomize', 'Aleatório')
+
+end
