@@ -1,7 +1,6 @@
 TTTWeaponsManager = {}
 TTTWeaponsManager.config = {}
 TTTWeaponsManager.lang = {}
-TTTWeaponsManager.net = {}
 
 // this functionality is also far from complete. A lot of stuff is to be made yet.
 TTTWeaponsManager.RootDir = "ttt_weapons_manager"
@@ -57,17 +56,31 @@ local function IncludeDir(directory)
     end
 end
 
-if SERVER then
+-- had to change the loading of addon files for after the gamemode has initialized
+-- else, it would break a lot of stuff we depend on TTT
+hook.Add('OnGamemodeLoaded', 'TTTWeaponsManager.GamemodeLoaded', function() 
 
-    print("[" .. MsgPrefix .. "] Initializing network messages...")
+    print('[' .. MsgPrefix .. '] Initializing addon files...')
 
-    util.AddNetworkString("TTTWeaponsManager_WeaponsTable")
-    util.AddNetworkString("TTTWeaponsManager_PlayerWeaponChoicesTbl")
+    if engine.ActiveGamemode() != 'terrortown' then 
 
-    print("[" .. MsgPrefix .. "] Initializing server side files...")
+        print('[' .. MsgPrefix ..'] Can\'t initialize this addon on another gamemode other than TTT!!! Please change it in your server settings!!!')
+        return
+    end
 
-elseif CLIENT then
-    print("[" .. MsgPrefix .. "] Initializing client side files...")
-end
+    if SERVER then
 
-IncludeDir(RootDir)
+        print("[" .. MsgPrefix .. "] Initializing network messages...")
+    
+        util.AddNetworkString('TTTWeaponsManager_RequestWeaponsToServer')
+        util.AddNetworkString("TTTWeaponsManager_WeaponSentToPlayer")
+    
+        print("[" .. MsgPrefix .. "] Initializing server side files...")
+    
+    elseif CLIENT then
+        print("[" .. MsgPrefix .. "] Initializing client side files...")
+    end
+
+    IncludeDir(RootDir)
+end)
+-- IncludeDir(RootDir)
