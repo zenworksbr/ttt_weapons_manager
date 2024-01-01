@@ -1,5 +1,7 @@
 if RayHUDTTT then return end
 
+local weapon_table = TTTWeaponsManager.config:FetchSingle('weapons')
+
 hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtabs)
 
     if (!TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] and !TTTWeaponsManager.config.Table.config_allowed_ranks[LocalPlayer():GetUserGroup()]) then return end
@@ -16,7 +18,7 @@ hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtab
     primary_loadout.cvar = "ttt_weapons_manager_primary_choice"
 
     primary_loadout:SetCategory("Armas primárias")
-    primary_loadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].primary)
+    primary_loadout:SetWeapons(weapon_table.primary)
     primary_loadout:SetSize(540, 50)
     primary_loadout:SetPos(30, 0)
 
@@ -25,7 +27,7 @@ hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtab
     secondary_loadout.cvar = "ttt_weapons_manager_secondary_choice"
 
     secondary_loadout:SetCategory("Armas secundárias")
-    secondary_loadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].secondary)
+    secondary_loadout:SetWeapons(weapon_table.secondary)
     secondary_loadout:SetSize(540, 50)
     secondary_loadout:SetPos(30, 125)
     
@@ -34,7 +36,7 @@ hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtab
     equipment_loadout.cvar = "ttt_weapons_manager_equipment_choice"
 
     equipment_loadout:SetCategory("Equipamentos")
-    equipment_loadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].equipment)
+    equipment_loadout:SetWeapons(weapon_table.equipment)
     equipment_loadout:SetSize(540, 50)
     equipment_loadout:SetPos(30, 250)
 

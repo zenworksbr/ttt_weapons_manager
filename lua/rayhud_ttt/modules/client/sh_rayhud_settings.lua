@@ -2,20 +2,24 @@ if !RayHUDTTT then return end
 
 local PANEL = {}
 
+local allowed_ranks = TTTWeaponsManager.config:FetchSingle('choice_allowed_ranks')
+local weapon_table = TTTWeaponsManager.config:FetchSingle('weapons')
+
 function PANEL:SetWeapons(tbl)
 	self.Weapons = {}
 
 	for _, v in pairs(tbl) do
-        if v then 
-		self.Weapons[_] = weapons.Get(_)
-        end
+		if v then 
+			self.Weapons[_] = weapons.Get(_)
+		end
 	end
 
 	self:AddWeapons()
 end
 
 function PANEL:GetNewValue()
-	if self.CheckBox:GetChecked() or !TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] then
+	
+	if self.CheckBox:GetChecked() or !allowed_ranks[LocalPlayer():GetUserGroup()] then
 		return "random"
 	elseif self.Loadout.SelectedPanel then
 		return self.Loadout.SelectedPanel.Value
@@ -86,8 +90,8 @@ function PANEL:Init()
 	self.Save:DockMargin(10 * RayUI.Scale, 10 * RayUI.Scale, 10 * RayUI.Scale, 0)
 	self.Save:SetTall(30 * RayUI.Scale)
 	self.Save.DoClick = function()
+
 		RunConsoleCommand(self.cvar, self:GetNewValue())
-        	TTTWeaponsManager.net.SendPreferencesToServer(self:GetNewValue(), self.slot)
 	end
 
 	self.Save:FormatRayButton("Salvar", RayUI.Colors.DarkGray6, RayUI.Colors.Green)
@@ -96,14 +100,13 @@ vgui.Register("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", PANEL, "Panel")
 
 RayHUDTTT.Help.CreateSettings("Armas Iniciais", RayUI.Icons.Vest, function(parent)
 
-    if (!TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] and !TTTWeaponsManager.config.Table.config_allowed_ranks[LocalPlayer():GetUserGroup()]) then return end
+    if !allowed_ranks[LocalPlayer():GetUserGroup()] then return end
 
     RayHUDTTT.Help.CreateCategory(parent, "Armas primárias", 260 * RayUI.Scale, function(parent)
     
         local PrimaryLoadout = vgui.Create("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", parent)
         PrimaryLoadout.cvar = "ttt_weapons_manager_primary_choice"
-	PrimaryLoadout.slot = "primary"
-        PrimaryLoadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].primary)
+        PrimaryLoadout:SetWeapons(weapon_table.primary)
         PrimaryLoadout:Dock(TOP)
         PrimaryLoadout:SetTall(360 * RayUI.Scale)
 
@@ -113,8 +116,7 @@ RayHUDTTT.Help.CreateSettings("Armas Iniciais", RayUI.Icons.Vest, function(paren
 
         local SecondaryLoadout = vgui.Create("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", parent)
         SecondaryLoadout.cvar = "ttt_weapons_manager_secondary_choice"
-	SecondaryLoadout.slot = "secondary"
-        SecondaryLoadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].secondary)
+        SecondaryLoadout:SetWeapons(weapon_table.secondary)
         SecondaryLoadout:Dock(TOP)
         SecondaryLoadout:SetTall(260 * RayUI.Scale)
 
@@ -124,8 +126,7 @@ RayHUDTTT.Help.CreateSettings("Armas Iniciais", RayUI.Icons.Vest, function(paren
 
         local EquipmentLoadout = vgui.Create("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", parent)
         EquipmentLoadout.cvar = "ttt_weapons_manager_equipment_choice"
-	EquipmentLoadout.slot = "equipment"
-        EquipmentLoadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].equipment)
+        EquipmentLoadout:SetWeapons(weapon_table.equipment)
         EquipmentLoadout:Dock(TOP)
         EquipmentLoadout:SetTall(260 * RayUI.Scale)
     
