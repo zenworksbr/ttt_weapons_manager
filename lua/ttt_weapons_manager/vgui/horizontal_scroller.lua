@@ -203,4 +203,4 @@ function PANEL:Init()
 
 end
 
-vgui.Register("HorizontalSelect", PANEL, "DForm")
+vgui.Register("TTTWeaponsManager_Interface", PANEL, "DForm")
