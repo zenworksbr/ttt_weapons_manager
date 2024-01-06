@@ -1,3 +1,5 @@
+if RayHUDTTT then return end
+
 local PANEL = {
 	Start = 1,
 	End = 5
@@ -70,16 +72,19 @@ function PANEL:SetWeapons(tbl)
 	self.Weapons = {}
 
 	for _, v in pairs(tbl) do
-        if v then 
-			self.Weapons[_] = weapons.Get(_)
-        end
+       		-- yes, I will do inverse conditions, I am THAT picky.
+		if !v then continue end
+		
+		self.Weapons[_] = weapons.Get(_)
 	end
 
 	self:AddWeapons()
 end
 
+local allowed_ranks = TTTWeaponsManager.config:FetchSingle('choice_allowed_ranks')
+
 function PANEL:GetNewValue()
-	if self.CheckBox:GetChecked() or !TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] then
+	if self.CheckBox:GetChecked() or !allowed_ranks[LocalPlayer():GetUserGroup()] then
 		return "random"
 	elseif self.Loadout.SelectedPanel then
 		return self.Loadout.SelectedPanel.Value
@@ -101,11 +106,7 @@ function PANEL:AddWeapons()
 
         icon:SetIcon(v.Icon or "vgui/ttt/icon_nades")
 
-		local wep_name = v.PrintName
-
-		if LANG.GetTranslation(wep_name) != "[ERROR: Translation of " .. wep_name .. " not found]" then
-			wep_name = LANG.GetTranslation(wep_name)
-		end
+		local wep_name = LANG.TryTranslation(v.PrintName) or wep_name
 
 		icon:SetTooltip(wep_name)
 
@@ -150,7 +151,6 @@ function PANEL:Init()
 	self.Save:SetText("Salvar")
 	self.Save.DoClick = function()
 		RunConsoleCommand(self.cvar, self:GetNewValue())
-		TTTWeaponsManager.net.SendPreferencesToServer()
 	end
 
 	self.Panel = vgui.Create("DPanel", self)
@@ -203,4 +203,4 @@ function PANEL:Init()
 
 end
 
-vgui.Register("HorizontalSelect", PANEL, "DForm")
+vgui.Register("TTTWeaponsManager_Interface", PANEL, "DForm")

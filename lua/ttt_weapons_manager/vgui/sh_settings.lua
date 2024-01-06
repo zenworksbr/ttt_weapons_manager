@@ -1,6 +1,12 @@
+if RayHUDTTT then return end
+
+local weapon_table = TTTWeaponsManager.config:FetchSingle('weapons')
+local allowed_ranks = TTTWeaponsManager.config:FetchSingle('choice_allowed_ranks')
+local config_ranks = TTTWeaponsManager.config:FetchSingle('config_allowed_ranks')
+
 hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtabs)
 
-    if (!TTTWeaponsManager.config.Table.choice_allowed_ranks[LocalPlayer():GetUserGroup()] and !TTTWeaponsManager.config.Table.config_allowed_ranks[LocalPlayer():GetUserGroup()]) then return end
+    if (!allowed_ranks[LocalPlayer():GetUserGroup()] and !config_ranks[LocalPlayer():GetUserGroup()]) then return end
 
     local tab = vgui.Create( "DPanel", dtabs )
     tab:Dock(FILL)
@@ -9,30 +15,30 @@ hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtab
     local panel1scroll = vgui.Create("DScrollPanel", tab)
     panel1scroll:Dock(FILL)
 
-    local primary_loadout = vgui.Create("HorizontalSelect", panel1scroll)
+    local primary_loadout = vgui.Create("TTTWeaponsManager_Interface", panel1scroll)
 
     primary_loadout.cvar = "ttt_weapons_manager_primary_choice"
 
     primary_loadout:SetCategory("Armas primárias")
-    primary_loadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].primary)
+    primary_loadout:SetWeapons(weapon_table.primary)
     primary_loadout:SetSize(540, 50)
     primary_loadout:SetPos(30, 0)
 
-    local secondary_loadout = vgui.Create("HorizontalSelect", panel1scroll)
+    local secondary_loadout = vgui.Create("TTTWeaponsManager_Interface", panel1scroll)
 
     secondary_loadout.cvar = "ttt_weapons_manager_secondary_choice"
 
     secondary_loadout:SetCategory("Armas secundárias")
-    secondary_loadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].secondary)
+    secondary_loadout:SetWeapons(weapon_table.secondary)
     secondary_loadout:SetSize(540, 50)
     secondary_loadout:SetPos(30, 125)
     
-    local equipment_loadout = vgui.Create("HorizontalSelect", panel1scroll)
+    local equipment_loadout = vgui.Create("TTTWeaponsManager_Interface", panel1scroll)
 
     equipment_loadout.cvar = "ttt_weapons_manager_equipment_choice"
 
     equipment_loadout:SetCategory("Equipamentos")
-    equipment_loadout:SetWeapons(TTTWeaponsManager.config.Table["weapons"].equipment)
+    equipment_loadout:SetWeapons(weapon_table.equipment)
     equipment_loadout:SetSize(540, 50)
     equipment_loadout:SetPos(30, 250)
 
