@@ -77,7 +77,7 @@ function PANEL:Init()
 	self.Panel.Paint = function(self, w, h)
 		draw.RoundedBox( 0, 0, 0, w, h, RayUI.Colors.DarkGray6 )
 	end
-    self.Panel:CustomScrollBar()
+    	self.Panel:CustomScrollBar()
 
 	self.Loadout = vgui.Create("EquipSelect", self.Panel)
 	self.Loadout:Dock(FILL)
