@@ -2,8 +2,11 @@ if !RayHUDTTT then return end
 
 local PANEL = {}
 
-local allowed_ranks = TTTWeaponsManager.config:FetchSingle('choice_allowed_ranks')
-local weapon_table = TTTWeaponsManager.config:FetchSingle('weapons')
+local settings = ZenLoadout.config:FetchConfig()
+
+local allowed_ranks = settings['choice_allowed_ranks']
+local weapons_table = settings['weapons']
+local config_ranks = settings['config_allowed_ranks']
 
 function PANEL:SetWeapons(tbl)
 	self.Weapons = {}
@@ -105,8 +108,8 @@ RayHUDTTT.Help.CreateSettings("Armas Iniciais", RayUI.Icons.Vest, function(paren
     RayHUDTTT.Help.CreateCategory(parent, "Armas primárias", 260 * RayUI.Scale, function(parent)
     
         local PrimaryLoadout = vgui.Create("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", parent)
-        PrimaryLoadout.cvar = "ttt_weapons_manager_primary_choice"
-        PrimaryLoadout:SetWeapons(weapon_table.primary)
+        PrimaryLoadout.cvar = "ttt_zen_loadout_primary_choice"
+        PrimaryLoadout:SetWeapons(weapons_table.primary)
         PrimaryLoadout:Dock(TOP)
         PrimaryLoadout:SetTall(360 * RayUI.Scale)
 
@@ -115,8 +118,8 @@ RayHUDTTT.Help.CreateSettings("Armas Iniciais", RayUI.Icons.Vest, function(paren
     RayHUDTTT.Help.CreateCategory(parent, "Armas secundárias", 260 * RayUI.Scale, function(parent)
 
         local SecondaryLoadout = vgui.Create("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", parent)
-        SecondaryLoadout.cvar = "ttt_weapons_manager_secondary_choice"
-        SecondaryLoadout:SetWeapons(weapon_table.secondary)
+        SecondaryLoadout.cvar = "ttt_zen_loadout_secondary_choice"
+        SecondaryLoadout:SetWeapons(weapons_table.secondary)
         SecondaryLoadout:Dock(TOP)
         SecondaryLoadout:SetTall(260 * RayUI.Scale)
 
@@ -125,8 +128,8 @@ RayHUDTTT.Help.CreateSettings("Armas Iniciais", RayUI.Icons.Vest, function(paren
     RayHUDTTT.Help.CreateCategory(parent, "Equipamentos", 260 * RayUI.Scale, function(parent)
 
         local EquipmentLoadout = vgui.Create("RayHUDTTT:TTTWeaponsManager_LoadoutPanel", parent)
-        EquipmentLoadout.cvar = "ttt_weapons_manager_equipment_choice"
-        EquipmentLoadout:SetWeapons(weapon_table.equipment)
+        EquipmentLoadout.cvar = "ttt_zen_loadout_equipment_choice"
+        EquipmentLoadout:SetWeapons(weapons_table.equipment)
         EquipmentLoadout:Dock(TOP)
         EquipmentLoadout:SetTall(260 * RayUI.Scale)
     
