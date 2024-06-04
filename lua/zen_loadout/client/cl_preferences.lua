@@ -1,5 +1,11 @@
 if RayHUDTTT then return end
 
+local settings = ZenLoadout.config:FetchConfig()
+
+local allowed_ranks = settings['choice_allowed_ranks']
+local weapons_table = settings['weapons']
+local config_ranks = settings['config_allowed_ranks']
+
 local PANEL = {
 	Start = 1,
 	End = 5
@@ -15,8 +21,8 @@ function PANEL:MoveLoadout(direction)
 		self.Start = self.Start+1
 		self.End = self.End+1
 	else 
-        return 
-    end
+        	return 
+    	end
 
 	if not GAMEMODE.LoadoutMoveID then
 		GAMEMODE.LoadoutMoveID = 1
@@ -80,8 +86,6 @@ function PANEL:SetWeapons(tbl)
 
 	self:AddWeapons()
 end
-
-local allowed_ranks = TTTWeaponsManager.config:FetchSingle('choice_allowed_ranks')
 
 function PANEL:GetNewValue()
 	if self.CheckBox:GetChecked() or !allowed_ranks[LocalPlayer():GetUserGroup()] then
@@ -169,8 +173,8 @@ function PANEL:Init()
 
 	self.Loadout.SelectPanel = function(panel, selected)
 		old_selectpanel(panel, selected)
-		print(old_selectpanel(panel, selected))
-		print(self.Loadout.SelectedPanel.Value)
+		-- print(old_selectpanel(panel, selected))
+		-- print(self.Loadout.SelectedPanel.Value)
 
 		if selected then
 			selected.PaintOver = function(_, w,h)
@@ -203,4 +207,47 @@ function PANEL:Init()
 
 end
 
-vgui.Register("TTTWeaponsManager_Interface", PANEL, "DForm")
+vgui.Register("ZenLoadout_Interface", PANEL, "DForm")
+
+hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtabs)
+
+	if (!allowed_ranks[LocalPlayer():GetUserGroup()] and !config_ranks[LocalPlayer():GetUserGroup()]) then return end
+
+	local tab = vgui.Create( "DPanel", dtabs )
+	tab:Dock(FILL)
+	tab:SetBackgroundColor(Color(0, 0, 0, 0))
+
+	local panel1scroll = vgui.Create("DScrollPanel", tab)
+	panel1scroll:Dock(FILL)
+
+	local primary_loadout = vgui.Create("ZenLoadout_Interface", panel1scroll)
+
+	primary_loadout.cvar = "ttt_zen_loadout_primary_choice"
+
+	primary_loadout:SetCategory("Armas primárias")
+	primary_loadout:SetWeapons(weapons_table.primary)
+	primary_loadout:SetSize(540, 50)
+	primary_loadout:SetPos(30, 0)
+
+	local secondary_loadout = vgui.Create("ZenLoadout_Interface", panel1scroll)
+
+	secondary_loadout.cvar = "ttt_zen_loadout_secondary_choice"
+
+	secondary_loadout:SetCategory("Armas secundárias")
+	secondary_loadout:SetWeapons(weapons_table.secondary)
+	secondary_loadout:SetSize(540, 50)
+	secondary_loadout:SetPos(30, 125)
+	
+	local equipment_loadout = vgui.Create("ZenLoadout_Interface", panel1scroll)
+
+	equipment_loadout.cvar = "ttt_zen_loadout_equipment_choice"
+
+	equipment_loadout:SetCategory("Equipamentos")
+	equipment_loadout:SetWeapons(weapons_table.equipment)
+	equipment_loadout:SetSize(540, 50)
+	equipment_loadout:SetPos(30, 250)
+
+	equipment_loadout:DockPadding(0,0,0,10)
+
+	dtabs:AddSheet("Armas Iniciais", tab , "icon16/gun.png")
+end)

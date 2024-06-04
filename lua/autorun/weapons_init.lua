@@ -1,14 +1,14 @@
-TTTWeaponsManager = {}
-TTTWeaponsManager.config = {}
-TTTWeaponsManager.lang = {}
+ZenLoadout = {}
+ZenLoadout.config = {}
+ZenLoadout.lang = {}
 
 // this functionality is also far from complete. A lot of stuff is to be made yet.
-TTTWeaponsManager.RootDir = "ttt_weapons_manager"
+ZenLoadout.RootDir = "zen_loadout"
 
-TTTWeaponsManager.Prefix = "Weapons Manager"
+ZenLoadout.Prefix = "Zen Loadout"
 
-local RootDir = TTTWeaponsManager.RootDir
-local MsgPrefix = TTTWeaponsManager.Prefix
+local RootDir = ZenLoadout.RootDir
+local MsgPrefix = ZenLoadout.Prefix
 
 local IgnoreDirs = {
     lang = false
@@ -58,7 +58,7 @@ end
 
 -- had to change the loading of addon files for after the gamemode has initialized
 -- else, it would break a lot of stuff we depend on TTT
-hook.Add('OnGamemodeLoaded', 'TTTWeaponsManager.GamemodeLoaded', function() 
+hook.Add('OnGamemodeLoaded', 'ZenLoadout.GamemodeLoaded', function() 
 
     print('[' .. MsgPrefix .. '] Initializing addon files...')
 
@@ -72,8 +72,11 @@ hook.Add('OnGamemodeLoaded', 'TTTWeaponsManager.GamemodeLoaded', function()
 
         print("[" .. MsgPrefix .. "] Initializing network messages...")
     
-        util.AddNetworkString('TTTWeaponsManager_RequestWeaponsToServer')
-        util.AddNetworkString("TTTWeaponsManager_WeaponSentToPlayer")
+        util.AddNetworkString("ZenLoadout_RequestSettings")
+        util.AddNetworkString("ZenLoadout_SettingsResponse")
+        util.AddNetworkString('ZenLoadout_RequestWeaponsToServer')
+        util.AddNetworkString("ZenLoadout_WeaponSentToPlayer")
+        util.AddNetworkString('ZenLoadout_ReceiveSettingsFromServer')
     
         print("[" .. MsgPrefix .. "] Initializing server side files...")
     
@@ -83,4 +86,3 @@ hook.Add('OnGamemodeLoaded', 'TTTWeaponsManager.GamemodeLoaded', function()
 
     IncludeDir(RootDir)
 end)
--- IncludeDir(RootDir)

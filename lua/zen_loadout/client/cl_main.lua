@@ -1,8 +1,8 @@
-local primary = CreateClientConVar("ttt_weapons_manager_primary_choice", "random", true)
-local secondary = CreateClientConVar("ttt_weapons_manager_secondary_choice", "random", true)
-local equipment = CreateClientConVar("ttt_weapons_manager_equipment_choice", "random", true)
+CreateClientConVar("ttt_zen_loadout_primary_choice", FCVAR_USERINFO, "random", true)
+CreateClientConVar("ttt_zen_loadout_secondary_choice", FCVAR_USERINFO, "random", true)
+CreateClientConVar("ttt_zen_loadout_equipment_choice", FCVAR_USERINFO, "random", true)
 
-hook.Add('TTTBeginRound', 'TTTWeaponsManager_RequestWeaponsToServerAtRoundStart', function() 
+local function RequestWeapons()
 
         local ply = LocalPlayer()
 
@@ -14,16 +14,23 @@ hook.Add('TTTBeginRound', 'TTTWeaponsManager_RequestWeaponsToServerAtRoundStart'
 
         -- this is WAY easier. We just fetch our own weapons, our own preferences and ask the server to give us the weapons.
         -- that's all we do here. We just ASK. The server receives the requests, validates and give the weapons accordingly.
-        net.Start('TTTWeaponsManager_RequestWeaponsToServer')
+        net.Start('ZenLoadout_RequestWeaponsToServer')
                 
                 net.WriteTable(ply:GetWeapons())
-                net.WriteString(primary:GetString())
-                net.WriteString(secondary:GetString())
-                net.WriteString(equipment:GetString()) 
         net.SendToServer()
+end
+
+hook.Add('TTTBeginRound', 'ZenLoadout_RequestWeaponsToServerAtRoundStart', RequestWeapons)
+
+ZenLoadout.ConfigTable = {}
+
+net.Receive('ZenLoadout_ReceiveSettingsFromServer', function(len, ply)
+                
+        ZenLoadout.ConfigTable = net.ReadTable()
 end)
 
-net.Receive('TTTWeaponsManager_WeaponSentToPlayer', function(len, ply) 
+
+net.Receive('ZenLoadout_WeaponSentToPlayer', function(len, ply) 
 
         local res = net.ReadTable()
 
@@ -44,18 +51,19 @@ net.Receive('TTTWeaponsManager_WeaponSentToPlayer', function(len, ply)
 
                         -- have to avoid adding "," to the start...
                         text = wep_name
-                end    
+                end
         end
 
+        if not LocalPlayer() then return end
         if text == "" then
 
                 -- we're using LocalPlayer here because ply parameter from net message is nil for some reason
-                LocalPlayer():ChatPrint("Parece que você já tinha armas nesta rodada! Você não recebeu nenhuma.")
+                chat.AddText(Color(255, 0, 0), "[Zen Loadout]", Color(255, 255, 255), " Parece que você já tinha armas nesta rodada! Você não recebeu nenhuma.")
         else
 
                 -- still showing weapons' classes instead of names
-                LocalPlayer():ChatPrint("Você recebeu " .. text .. "!")
+                chat.AddText(Color(255, 0, 0), "[Zen Loadout]", Color(255, 255, 255), " Você recebeu: " .. text .. "!")
         end
 end)
 
-print("[" .. TTTWeaponsManager.Prefix .. "] Client side initialized")
+print("[" .. ZenLoadout.Prefix .. "] Client side initialized")
