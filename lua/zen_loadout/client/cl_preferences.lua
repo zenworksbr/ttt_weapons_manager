@@ -143,7 +143,7 @@ function PANEL:Init()
 
 	self.CheckBox = vgui.Create("DCheckBoxLabel", self)
 	self.CheckBox:SetPos(320, 3)
-	self.CheckBox:SetText("Aleatório")
+	self.CheckBox:SetText("aleatório")
 	self.CheckBox:SizeToContents()
 	if self.cvar == "random" then 
 		self.CheckBox:SetChecked(true)
@@ -152,7 +152,7 @@ function PANEL:Init()
 	self.Save = vgui.Create("DButton", self)
 	self.Save:SetSize(50, 17)
 	self.Save:SetPos(438, 1)
-	self.Save:SetText("Salvar")
+	self.Save:SetText("salvar")
 	self.Save.DoClick = function()
 		RunConsoleCommand(self.cvar, self:GetNewValue())
 	end
@@ -249,5 +249,5 @@ hook.Add("TTTSettingsTabs", "TTTWeaponsMenuSettingsTabInitialize", function(dtab
 
 	equipment_loadout:DockPadding(0,0,0,10)
 
-	dtabs:AddSheet("Armas Iniciais", tab , "icon16/gun.png")
+	dtabs:AddSheet("zen loadout", tab , "icon16/gun.png")
 end)

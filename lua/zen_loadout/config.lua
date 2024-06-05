@@ -66,6 +66,7 @@ ZenLoadout.config.DefaultSettings = {
     // add ULX/CAMI ranks that should have the ability to select their own loadout
     choice_allowed_ranks = {
         superadmin = true,
+        donator = true,
         user = false,
     },
     // by default, only superadmins should have access to the addon's global settings and management
@@ -153,28 +154,9 @@ function ZenLoadout.config:FetchConfig()
     return settings
 end
 
-
 function ZenLoadout.config:FetchSingle(field)
 
     return self:FetchConfig()[field]
-end
-
--- only allow these fields to players
--- we also avoid players from exploiting the configuration with custom scripts this way
-function ZenLoadout.config:SendSettingsToPlayer(ply)
-    local settings = self:FetchConfig()
-
-    net.Start('ZenLoadout_SettingsResponse', false)
-
-        response = {
-            weapons = settings.weapons,
-            choice_allowed_ranks = settings.choice_allowed_ranks,
-            config_allowed_ranks = settings.config_allowed_ranks,
-        }
-
-        net.WriteTable(response)
-
-    net.Broadcast()
 end
 
 local autodetect_options = ZenLoadout.config:FetchSingle('autodetect_options')
@@ -183,8 +165,8 @@ local weapon_table = ZenLoadout.config:FetchSingle('weapons')
 local wepmeta = FindMetaTable('Weapon')
 
 -- this function just returns our designated category for the weapon
-function wepmeta:ZenCategory() 
-    return autodetect_options.WeaponCategories[self.Kind] 
+function ZenLoadout.config:ZenCategory(kind) 
+    return autodetect_options.WeaponCategories[kind] 
 end
 
 local fetched = false
@@ -206,13 +188,11 @@ local function AutoFetchServerWeapons()
 
     for _, v in ipairs(weapon_cache) do
 
-        -- print(v.ClassName)
-
-        local wep_category = v:ZenCategory()
+        local wep_category = ZenLoadout.config:ZenCategory(v.Kind)
 
         -- skip weapons that are already 
         if wep_category == nil
-        or weapon_table[v:ZenCategory()][v.ClassName] 
+        or weapon_table[ZenLoadout.config:ZenCategory(v.Kind)][v.ClassName] 
         then continue end
 
         -- yeah, we have THAT MANY filters.
