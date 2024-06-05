@@ -58,11 +58,11 @@ net.Receive('ZenLoadout_WeaponSentToPlayer', function(len, ply)
         if text == "" then
 
                 -- we're using LocalPlayer here because ply parameter from net message is nil for some reason
-                chat.AddText(Color(255, 0, 0), "[Zen Loadout]", Color(255, 255, 255), " Parece que você já tinha armas nesta rodada! Você não recebeu nenhuma.")
+                chat.AddText(Color(255, 0, 0), "[zen loadout]", Color(255, 255, 255), " Parece que você já tinha armas nesta rodada! Você não recebeu nenhuma.")
         else
 
                 -- still showing weapons' classes instead of names
-                chat.AddText(Color(255, 0, 0), "[Zen Loadout]", Color(255, 255, 255), " Você recebeu: " .. text .. "!")
+                chat.AddText(Color(255, 0, 0), "[zen loadout]", Color(255, 255, 255), " Você recebeu: " .. text .. "!")
         end
 end)
 

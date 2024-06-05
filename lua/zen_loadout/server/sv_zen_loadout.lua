@@ -56,7 +56,8 @@ function plymeta:GiveLoadout(ply_prefs, inv_weps)
 
     for k, v in pairs(inv_weps) do
 
-        local cat = v:ZenCategory()
+
+        local cat = ZenLoadout.config:ZenCategory(v.Kind)
 
         if !cat then continue end
 
