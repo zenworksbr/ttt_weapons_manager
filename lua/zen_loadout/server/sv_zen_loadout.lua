@@ -78,6 +78,7 @@ function plymeta:GiveLoadout(ply_prefs, inv_weps)
         end
         
         local wep_obj = weapons.Get(wep_class)
+        if not wep_obj then continue end
 
         self:Give(wep_class)
 
