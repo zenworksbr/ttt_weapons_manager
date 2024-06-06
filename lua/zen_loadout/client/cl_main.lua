@@ -1,6 +1,6 @@
-CreateClientConVar("ttt_zen_loadout_primary_choice", FCVAR_USERINFO, "random", true)
-CreateClientConVar("ttt_zen_loadout_secondary_choice", FCVAR_USERINFO, "random", true)
-CreateClientConVar("ttt_zen_loadout_equipment_choice", FCVAR_USERINFO, "random", true)
+CreateClientConVar("ttt_zen_loadout_primary_choice", "random", FCVAR_USERINFO, true)
+CreateClientConVar("ttt_zen_loadout_secondary_choice", "random", FCVAR_USERINFO, true)
+CreateClientConVar("ttt_zen_loadout_equipment_choice", "random", FCVAR_USERINFO, true)
 
 local function RequestWeapons()
 
